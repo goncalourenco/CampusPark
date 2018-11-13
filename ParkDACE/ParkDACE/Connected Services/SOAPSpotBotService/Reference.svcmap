@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a61a75d3-f67f-4a34-919d-d3c45ae8b731" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:49922/SOAPSpotBotService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SOAPSpotBotService.xsd" MetadataType="Schema" ID="4762d102-f8ed-4d33-a49d-f28f422308ad" SourceId="1" SourceUrl="http://localhost:49922/SOAPSpotBotService.svc?xsd=xsd0" />
+    <MetadataFile FileName="SOAPSpotBotService.disco" MetadataType="Disco" ID="95705170-cf6b-45ea-b01c-0596fec3daf7" SourceId="1" SourceUrl="http://localhost:49922/SOAPSpotBotService.svc?disco" />
+    <MetadataFile FileName="SOAPSpotBotService.wsdl" MetadataType="Wsdl" ID="36e97f7b-5365-4a2f-b28f-39c9bb21d2ac" SourceId="1" SourceUrl="http://localhost:49922/SOAPSpotBotService.svc?wsdl" />
+    <MetadataFile FileName="SOAPSpotBotService1.xsd" MetadataType="Schema" ID="ffb50d66-371c-4900-9864-08146897661d" SourceId="1" SourceUrl="http://localhost:49922/SOAPSpotBotService.svc?xsd=xsd2" />
+    <MetadataFile FileName="SOAPSpotBotService2.xsd" MetadataType="Schema" ID="78e6db16-ff39-4142-a600-d336b4f86892" SourceId="1" SourceUrl="http://localhost:49922/SOAPSpotBotService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
