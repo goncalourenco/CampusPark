@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Xml;
 
 namespace BOT_SpotSensors
 {
@@ -12,22 +13,33 @@ namespace BOT_SpotSensors
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        public string GetData(int value)
-        {
-            return string.Format("You entered: {0}", value);
-        }
+        string strPath = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"App_data\\soap_bot.xml";
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
-        {
-            if (composite == null)
+        public List<ParkingSpot> GetParkingSpotsInfo()
+        {          
+            XmlDocument doc = new XmlDocument();
+            doc.Load(strPath);
+            XmlNodeList lst = doc.SelectNodes("//parkingSpot");
+            List<ParkingSpot> parkingSpots = new List<ParkingSpot>();
+
+            foreach (XmlNode spotNode in lst)
             {
-                throw new ArgumentNullException("composite");
+                Status status = new Status();
+                XmlNode valueNode = doc.SelectSingleNode($"/park/parkingSpot[name='{spotNode["name"].InnerText}']/status/value");
+                status.value = valueNode.InnerText;
+                status.timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                ParkingSpot parkingSpot = new ParkingSpot(
+                    spotNode["name"].InnerText,
+                    status,
+                    spotNode["location"].InnerText,
+                    Convert.ToInt32(spotNode["batteryStatus"].InnerText)
+                );
+
+                parkingSpots.Add(parkingSpot);
             }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+
+            return parkingSpots;
         }
     }
 }
