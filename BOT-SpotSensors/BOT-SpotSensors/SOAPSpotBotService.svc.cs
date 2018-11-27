@@ -26,8 +26,8 @@ namespace BOT_SpotSensors
             {
                 Status status = new Status();
                 XmlNode valueNode = doc.SelectSingleNode($"/park/parkingSpot[name='{spotNode["name"].InnerText}']/status/value");
-                status.value = valueNode.InnerText;
-                status.timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                status.Value = valueNode.InnerText;
+                status.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 ParkingSpot parkingSpot = new ParkingSpot(
                     spotNode["name"].InnerText,
