@@ -23,16 +23,16 @@ namespace ParkDACE.SOAPSpotBotService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int batteryStatusField;
+        private int BatteryStatusField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string locationField;
+        private string LocationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string nameField;
+        private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ParkDACE.SOAPSpotBotService.Status statusField;
+        private ParkDACE.SOAPSpotBotService.Status StatusField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -45,53 +45,53 @@ namespace ParkDACE.SOAPSpotBotService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int batteryStatus {
+        public int BatteryStatus {
             get {
-                return this.batteryStatusField;
+                return this.BatteryStatusField;
             }
             set {
-                if ((this.batteryStatusField.Equals(value) != true)) {
-                    this.batteryStatusField = value;
-                    this.RaisePropertyChanged("batteryStatus");
+                if ((this.BatteryStatusField.Equals(value) != true)) {
+                    this.BatteryStatusField = value;
+                    this.RaisePropertyChanged("BatteryStatus");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string location {
+        public string Location {
             get {
-                return this.locationField;
+                return this.LocationField;
             }
             set {
-                if ((object.ReferenceEquals(this.locationField, value) != true)) {
-                    this.locationField = value;
-                    this.RaisePropertyChanged("location");
+                if ((object.ReferenceEquals(this.LocationField, value) != true)) {
+                    this.LocationField = value;
+                    this.RaisePropertyChanged("Location");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string name {
+        public string Name {
             get {
-                return this.nameField;
+                return this.NameField;
             }
             set {
-                if ((object.ReferenceEquals(this.nameField, value) != true)) {
-                    this.nameField = value;
-                    this.RaisePropertyChanged("name");
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public ParkDACE.SOAPSpotBotService.Status status {
+        public ParkDACE.SOAPSpotBotService.Status Status {
             get {
-                return this.statusField;
+                return this.StatusField;
             }
             set {
-                if ((object.ReferenceEquals(this.statusField, value) != true)) {
-                    this.statusField = value;
-                    this.RaisePropertyChanged("status");
+                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
                 }
             }
         }
@@ -116,10 +116,10 @@ namespace ParkDACE.SOAPSpotBotService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string timestampField;
+        private string TimestampField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string valueField;
+        private string ValueField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -132,27 +132,27 @@ namespace ParkDACE.SOAPSpotBotService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string timestamp {
+        public string Timestamp {
             get {
-                return this.timestampField;
+                return this.TimestampField;
             }
             set {
-                if ((object.ReferenceEquals(this.timestampField, value) != true)) {
-                    this.timestampField = value;
-                    this.RaisePropertyChanged("timestamp");
+                if ((object.ReferenceEquals(this.TimestampField, value) != true)) {
+                    this.TimestampField = value;
+                    this.RaisePropertyChanged("Timestamp");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string value {
+        public string Value {
             get {
-                return this.valueField;
+                return this.ValueField;
             }
             set {
-                if ((object.ReferenceEquals(this.valueField, value) != true)) {
-                    this.valueField = value;
-                    this.RaisePropertyChanged("value");
+                if ((object.ReferenceEquals(this.ValueField, value) != true)) {
+                    this.ValueField = value;
+                    this.RaisePropertyChanged("Value");
                 }
             }
         }

@@ -8,17 +8,17 @@
   <xs:element name="ArrayOfParkingSpot" nillable="true" type="tns:ArrayOfParkingSpot" />
   <xs:complexType name="ParkingSpot">
     <xs:sequence>
-      <xs:element minOccurs="0" name="batteryStatus" type="xs:int" />
-      <xs:element minOccurs="0" name="location" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="status" nillable="true" type="tns:Status" />
+      <xs:element minOccurs="0" name="BatteryStatus" type="xs:int" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="tns:Status" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ParkingSpot" nillable="true" type="tns:ParkingSpot" />
   <xs:complexType name="Status">
     <xs:sequence>
-      <xs:element minOccurs="0" name="timestamp" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Timestamp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Status" nillable="true" type="tns:Status" />

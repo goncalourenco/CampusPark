@@ -11,17 +11,35 @@ namespace ParkDACE
 {
     class Program
     {
+
+        /**
+         * TODO:
+         * Dentro do For do arraySpotsB fazer publish para o canal "ParkB" o spot depois de preencher a localizacao
+         * No metodo callback fazer publish para o canal ParkA o spot depois depois de preencher a localizacao
+         **/
+
         static void Main(string[] args)
         {
+
             Program program = new Program();
             program.Init();
         }
 
         ParkingSensorNodeDll.ParkingSensorNodeDll dll;
-        ParkingSpot[] arraySpotsA;
-        int i;
+        public int IndexParkA { get; set; }
 
         public void Init()
+        {
+            GetAndPublishSpotsForParkB();
+
+            IndexParkA = 0;
+            dll = new ParkingSensorNodeDll.ParkingSensorNodeDll();
+            dll.Initialize(NewSensorValueFunction, 100);
+
+            Console.ReadKey();
+        }
+
+        private void GetAndPublishSpotsForParkB()
         {
             ParkingSpot[] arraySpotsB;
             string strPathParkB = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_B_Park2.xlsx";
@@ -34,33 +52,37 @@ namespace ParkDACE
                 var locations = ReadNxMFromExcelFile(strPathParkB, "B6", "B15").ToArray();
                 for (int i = 0; i < locations.Length; i++)
                 {
-                    arraySpotsB[i].location = locations[i];
+                    arraySpotsB[i].Location = locations[i];
+                    //publish
                 }
             }
-
-            string strPathParkA = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_A_Park2.xlsx";
-            arraySpotsA = new ParkingSpot[15];
-            i = 0;
-            dll = new ParkingSensorNodeDll.ParkingSensorNodeDll();
-            dll.Initialize(NewSensorValueFunction, 500);
-            while (i<15)
-            {
-
-            }
-            dll.Stop();
-
-            Console.ReadKey();
         }
 
         //The callback...
         public void NewSensorValueFunction(string str)
         {
-            string[] spotInfo = str.Split(';');
-            foreach (var item in spotInfo)
+            if (IndexParkA >= 15)
             {
-                Console.WriteLine(item);
+                dll.Stop();
             }
-            i++;
+            else
+            {
+                Console.WriteLine(str);
+                string[] spotInfo = str.Split(';');
+                ParkingSpot parkingSpot = new ParkingSpot();
+                parkingSpot.Name = spotInfo[1];
+
+                Status status = new Status();
+                status.Timestamp = spotInfo[2];
+                status.Value = spotInfo[3];
+                parkingSpot.Status = status;
+                parkingSpot.BatteryStatus = Convert.ToInt32(spotInfo[4]);
+
+                string strPathParkA = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_A_Park1.xlsx";
+                var locations = ReadNxMFromExcelFile(strPathParkA, "B6", "B20").ToArray();
+                parkingSpot.Location = locations[IndexParkA++];
+                //publis
+            }
         }
 
         public static List<string> ReadNxMFromExcelFile(string filename, string N, string M)
