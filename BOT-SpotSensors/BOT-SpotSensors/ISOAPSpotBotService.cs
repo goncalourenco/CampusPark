@@ -28,21 +28,21 @@ namespace BOT_SpotSensors
         private int intBatteryStatus;
 
         [DataMember]
-        public string name
+        public string Name
         {
             get { return strName; }
             set { strName = value; }
         }
 
         [DataMember]
-        public Status status
+        public Status Status
         {
             get { return  stStatus; }
             set {  stStatus = value; }
         }
 
         [DataMember]
-        public string location
+        public string Location
         {
             get { return strLocation; }
             set { strLocation = value; }
@@ -50,7 +50,7 @@ namespace BOT_SpotSensors
 
       
         [DataMember]
-        public int batteryStatus
+        public int BatteryStatus
         {
             get { return intBatteryStatus; }
             set { intBatteryStatus = value; }
@@ -74,9 +74,9 @@ namespace BOT_SpotSensors
     public class Status
     {
         [DataMember]
-        public string value { get; set; }
+        public string Value { get; set; }
         [DataMember]
-        public string timestamp { get; set; }
+        public string Timestamp { get; set; }
 
         public Status()
         {
