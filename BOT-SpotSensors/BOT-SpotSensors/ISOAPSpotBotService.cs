@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Xml;
 
 namespace BOT_SpotSensors
 {
@@ -14,6 +15,9 @@ namespace BOT_SpotSensors
     {
         [OperationContract]
         List<ParkingSpot> GetParkingSpotsInfo();
+
+        [OperationContract]
+        String GetParkingSpotsInfoXML();
     }
 
 

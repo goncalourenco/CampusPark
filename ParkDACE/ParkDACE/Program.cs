@@ -18,15 +18,15 @@ namespace ParkDACE
          * No metodo callback fazer publish para o canal ParkA o spot depois depois de preencher a localizacao
          **/
 
+        ParkingSensorNodeDll.ParkingSensorNodeDll dll;
+        public int IndexParkA { get; set; }
+
         static void Main(string[] args)
         {
 
             Program program = new Program();
             program.Init();
         }
-
-        ParkingSensorNodeDll.ParkingSensorNodeDll dll;
-        public int IndexParkA { get; set; }
 
         public void Init()
         {
