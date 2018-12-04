@@ -172,10 +172,16 @@ namespace ParkDACE.SOAPSpotBotService {
     public interface ISOAPSpotBotService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfo", ReplyAction="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfoResponse")]
-        ParkDACE.SOAPSpotBotService.ParkingSpot[] GetParkingSpotsInfo();
+        ParkDACE.SOAPSpotBotService.ParkingSpot[] GetParkingSpotsInfo(int numberOfSpots);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfo", ReplyAction="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfoResponse")]
-        System.Threading.Tasks.Task<ParkDACE.SOAPSpotBotService.ParkingSpot[]> GetParkingSpotsInfoAsync();
+        System.Threading.Tasks.Task<ParkDACE.SOAPSpotBotService.ParkingSpot[]> GetParkingSpotsInfoAsync(int numberOfSpots);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfoXML", ReplyAction="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfoXMLResponse")]
+        string GetParkingSpotsInfoXML(int numberOfSpots);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfoXML", ReplyAction="http://tempuri.org/ISOAPSpotBotService/GetParkingSpotsInfoXMLResponse")]
+        System.Threading.Tasks.Task<string> GetParkingSpotsInfoXMLAsync(int numberOfSpots);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -205,12 +211,20 @@ namespace ParkDACE.SOAPSpotBotService {
                 base(binding, remoteAddress) {
         }
         
-        public ParkDACE.SOAPSpotBotService.ParkingSpot[] GetParkingSpotsInfo() {
-            return base.Channel.GetParkingSpotsInfo();
+        public ParkDACE.SOAPSpotBotService.ParkingSpot[] GetParkingSpotsInfo(int numberOfSpots) {
+            return base.Channel.GetParkingSpotsInfo(numberOfSpots);
         }
         
-        public System.Threading.Tasks.Task<ParkDACE.SOAPSpotBotService.ParkingSpot[]> GetParkingSpotsInfoAsync() {
-            return base.Channel.GetParkingSpotsInfoAsync();
+        public System.Threading.Tasks.Task<ParkDACE.SOAPSpotBotService.ParkingSpot[]> GetParkingSpotsInfoAsync(int numberOfSpots) {
+            return base.Channel.GetParkingSpotsInfoAsync(numberOfSpots);
+        }
+        
+        public string GetParkingSpotsInfoXML(int numberOfSpots) {
+            return base.Channel.GetParkingSpotsInfoXML(numberOfSpots);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetParkingSpotsInfoXMLAsync(int numberOfSpots) {
+            return base.Channel.GetParkingSpotsInfoXMLAsync(numberOfSpots);
         }
     }
 }

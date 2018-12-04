@@ -3,13 +3,29 @@
   <xs:import schemaLocation="http://localhost:49922/SOAPSpotBotService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/BOT_SpotSensors" />
   <xs:element name="GetParkingSpotsInfo">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element minOccurs="0" name="numberOfSpots" type="xs:int" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetParkingSpotsInfoResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/BOT_SpotSensors" minOccurs="0" name="GetParkingSpotsInfoResult" nillable="true" type="q1:ArrayOfParkingSpot" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetParkingSpotsInfoXML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="numberOfSpots" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetParkingSpotsInfoXMLResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetParkingSpotsInfoXMLResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
