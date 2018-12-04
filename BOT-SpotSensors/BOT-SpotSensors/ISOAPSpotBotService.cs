@@ -14,10 +14,10 @@ namespace BOT_SpotSensors
     public interface ISOAPSpotBotService
     {
         [OperationContract]
-        List<ParkingSpot> GetParkingSpotsInfo();
+        List<ParkingSpot> GetParkingSpotsInfo(int numberOfSpots);
 
         [OperationContract]
-        String GetParkingSpotsInfoXML();
+        String GetParkingSpotsInfoXML(int numberOfSpots);
     }
 
 

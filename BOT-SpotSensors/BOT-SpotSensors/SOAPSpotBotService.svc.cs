@@ -15,10 +15,10 @@ namespace BOT_SpotSensors
     {
         string strPath = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"App_data\\soap_bot.xml";
 
-        public List<ParkingSpot> GetParkingSpotsInfo()
+        public List<ParkingSpot> GetParkingSpotsInfo(int numberOfSpots)
         {
             RemoveAllXmlChilds();
-            AddSpots();
+            AddSpots(numberOfSpots);
             XmlDocument doc = new XmlDocument();
             doc.Load(strPath);
             XmlNodeList lst = doc.SelectNodes("//parkingSpot");
@@ -29,7 +29,7 @@ namespace BOT_SpotSensors
                 Status status = new Status();
                 XmlNode valueNode = doc.SelectSingleNode($"/park/parkingSpot[name='{spotNode["name"].InnerText}']/status/value");
                 status.Value = valueNode.InnerText;
-                status.Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                status.Timestamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
 
                 ParkingSpot parkingSpot = new ParkingSpot(
                     spotNode["name"].InnerText,
@@ -44,7 +44,7 @@ namespace BOT_SpotSensors
             return parkingSpots;
         }
 
-        private void AddSpots()
+        private void AddSpots(int numberOfSpots)
         {
             XmlDocument doc = new XmlDocument();
            
@@ -55,7 +55,7 @@ namespace BOT_SpotSensors
             string[] values = new string[] { "free", "occupied" };
             string[] bateryStatus = new string[] { "0", "1" };
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 1; i <= numberOfSpots; i++)
             {
                 XmlElement parkingSpot = doc.CreateElement("parkingSpot");
 
@@ -97,9 +97,9 @@ namespace BOT_SpotSensors
             }
         }
 
-        public String GetParkingSpotsInfoXML()
+        public String GetParkingSpotsInfoXML(int numberOfSpots)
         {
-            AddSpots();
+            AddSpots(numberOfSpots);
             XmlDocument doc = new XmlDocument();
             doc.Load(strPath);
             return doc.OuterXml;
