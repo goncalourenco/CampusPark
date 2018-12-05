@@ -32,6 +32,7 @@ namespace BOT_SpotSensors
                 status.Timestamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
 
                 ParkingSpot parkingSpot = new ParkingSpot(
+                    spotNode["id"].InnerText,
                     spotNode["name"].InnerText,
                     status,
                     spotNode["location"].InnerText,

@@ -26,6 +26,9 @@ namespace ParkDACE.SOAPSpotBotService {
         private int BatteryStatusField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LocationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -53,6 +56,19 @@ namespace ParkDACE.SOAPSpotBotService {
                 if ((this.BatteryStatusField.Equals(value) != true)) {
                     this.BatteryStatusField = value;
                     this.RaisePropertyChanged("BatteryStatus");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdField, value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
                 }
             }
         }

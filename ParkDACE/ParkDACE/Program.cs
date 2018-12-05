@@ -23,20 +23,13 @@ namespace ParkDACE
         XmlDocument configurationXml;
         string[] mStrTopicsInfo = { "spotsParkA", "spotsParkB", "parksInfo" };
         MqttClient mClient;
+        public string[] LocationsParkA { get; set; }
+
 
         static void Main(string[] args)
         {
             Program program = new Program();
-            var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromMinutes(2);
-
-            program.Setup();
-            program.GetAndPublishInfoForParks();
-            var timer = new System.Threading.Timer((e) =>
-            {
-                program.Init(); 
-            }, null, startTimeSpan, periodTimeSpan);
-            Console.ReadKey();        
+            program.Setup(); 
         }
 
         private void Setup()
@@ -45,18 +38,31 @@ namespace ParkDACE
             configurationXml.Load("ParkingNodesConfig.xml");
             SetupMosquitto();
             NumberOfSpotsParkA = Int32.Parse(configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_A_Park1']/numberOfSpots").InnerText);
+
+            string strPathParkA = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_A_Park1.xlsx";
+            LocationsParkA = ReadNxMFromExcelFile(strPathParkA, "A6", "B" + (5 + NumberOfSpotsParkA)).ToArray();
+
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromMinutes(Int16.Parse(configurationXml.SelectSingleNode("/parkingLocation/@refreshRate").InnerText));
+            
+            GetAndPublishInfoForParks();
+
+            var timer = new System.Threading.Timer((e) =>
+            {
+                Init();
+              
+            }, null, startTimeSpan, periodTimeSpan);
+            
+            Console.ReadKey();
         }
 
         public void Init()
-        {
-            Console.Clear();
+        {       
             GetAndPublishSpotsForParkB();
 
             IndexParkA = 0;         
             dll = new ParkingSensorNodeDll.ParkingSensorNodeDll();
-            dll.Initialize(NewSensorValueFunction, 100);
-
-            Console.ReadKey();
+            dll.Initialize(GetAndPublishSpotsForParkA, 50);
         }  
 
         private void GetAndPublishSpotsForParkB()
@@ -73,7 +79,8 @@ namespace ParkDACE
                 Console.WriteLine("Received Data from BOT-SpotSensors");
                 foreach (ParkingSpot parkingSpot in arraySpotsB)
                 {
-                    Console.WriteLine("Name: " + parkingSpot.Name + Environment.NewLine 
+                    Console.WriteLine("Name: " + parkingSpot.Name + Environment.NewLine
+                        + "ID: " + parkingSpot.Id + Environment.NewLine
                         + "Status: " + parkingSpot.Status.Value + Environment.NewLine
                         + "Timestamp:" + parkingSpot.Status.Timestamp + Environment.NewLine
                         + "Location: " + parkingSpot.Location + Environment.NewLine);
@@ -90,6 +97,7 @@ namespace ParkDACE
                         {
                             parkingSpot.Location = locations[++i];
                             Console.WriteLine("Name: " + parkingSpot.Name + Environment.NewLine
+                                + "ID: " + parkingSpot.Id + Environment.NewLine
                                 + "Status: " + parkingSpot.Status.Value + Environment.NewLine
                                 + "Timestamp:" + parkingSpot.Status.Timestamp + Environment.NewLine
                                 + "Location: " + parkingSpot.Location + Environment.NewLine);
@@ -104,11 +112,12 @@ namespace ParkDACE
         }
 
         //The callback...
-        public void NewSensorValueFunction(string str)
+        public void GetAndPublishSpotsForParkA(string str)
         {
             if (IndexParkA >= NumberOfSpotsParkA)
             {
                 dll.Stop();
+                Console.WriteLine(Environment.NewLine);
             }
             else
             {
@@ -116,22 +125,21 @@ namespace ParkDACE
                 string[] spotInfo = str.Split(';');
                 ParkingSpot parkingSpot = new ParkingSpot();
                 parkingSpot.Name = spotInfo[1];
-
+                parkingSpot.Id = spotInfo[0];
                 Status status = new Status();
                 status.Timestamp = spotInfo[2];
                 status.Value = spotInfo[3];
                 parkingSpot.Status = status;
                 parkingSpot.BatteryStatus = Convert.ToInt32(spotInfo[4]);
 
-                string strPathParkA = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_A_Park1.xlsx";
-                var locations = ReadNxMFromExcelFile(strPathParkA, "A6", "B" + (5 + NumberOfSpotsParkA)).ToArray();
 
-                for (int i = 0; i < locations.Length; i++)
+                for (int i = 0; i < LocationsParkA.Length; i++)
                 {
-                    if (parkingSpot.Name == locations[i])
+                    if (parkingSpot.Name == LocationsParkA[i])
                     {
-                        parkingSpot.Location = locations[++i];
+                        parkingSpot.Location = LocationsParkA[++i];
                         Console.WriteLine("Name: " + parkingSpot.Name + Environment.NewLine
+                        + "ID: " + parkingSpot.Id + Environment.NewLine
                         + "Status: " + parkingSpot.Status.Value + Environment.NewLine
                         + "Timestamp:" + parkingSpot.Status.Timestamp + Environment.NewLine
                         + "Location: " + parkingSpot.Location + Environment.NewLine);
@@ -160,7 +168,8 @@ namespace ParkDACE
             parks.AppendChild(parkA);
             parks.AppendChild(parkB);
             parksInfo.AppendChild(parks);
-
+            
+            Console.WriteLine(parksInfo.OuterXml);
             mClient.Publish(mStrTopicsInfo[2], Encoding.UTF8.GetBytes(parksInfo.OuterXml));
         }
 

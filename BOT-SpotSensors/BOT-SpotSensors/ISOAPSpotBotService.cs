@@ -25,11 +25,18 @@ namespace BOT_SpotSensors
     [DataContract]
     public class ParkingSpot
     {
-       
+        private string strId;
         private string strName;
         private Status stStatus;
         private string strLocation;
         private int intBatteryStatus;
+
+        [DataMember]
+        public string Id
+        {
+            get { return strId; }
+            set { strId = value; }
+        }
 
         [DataMember]
         public string Name
@@ -65,12 +72,13 @@ namespace BOT_SpotSensors
 
         }
 
-        public ParkingSpot(string name, Status status, string location, int batteryStatus)
+        public ParkingSpot(string id, string name, Status status, string location, int batteryStatus)
         {
             this.strName = name;
             this.stStatus = status;
             this.strLocation = location;
             this.intBatteryStatus = batteryStatus;
+            this.strId = id;
         }
     }
 

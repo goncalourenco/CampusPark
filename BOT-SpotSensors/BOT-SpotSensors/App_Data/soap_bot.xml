@@ -6,11 +6,11 @@
     <location>
     </location>
     <status>
-      <value>occupied</value>
+      <value>free</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>1</batteryStatus>
+    <batteryStatus>0</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -19,11 +19,11 @@
     <location>
     </location>
     <status>
-      <value>occupied</value>
+      <value>free</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>1</batteryStatus>
+    <batteryStatus>0</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
