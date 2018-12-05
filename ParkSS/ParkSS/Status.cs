@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkSS
 {
-    class Status
+    public class Status
     {
         public string Value { get; set; }
         

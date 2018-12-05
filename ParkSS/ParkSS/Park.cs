@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkSS
 {
-    class Park
+    public class Park
     {
         private String id;
 
@@ -26,7 +26,7 @@ namespace ParkSS
 
         private int numberOfSpecialSpots;
 
-        public int MyProperty
+        public int NumberOfSpecialSpots
         {
             get { return numberOfSpecialSpots; }
             set { numberOfSpecialSpots = value; }

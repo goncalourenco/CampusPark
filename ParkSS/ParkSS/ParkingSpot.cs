@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkSS
 {
-    class ParkingSpot
+    public class ParkingSpot
     {
         private string strId;
         private string strName;

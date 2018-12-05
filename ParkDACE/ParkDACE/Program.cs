@@ -21,7 +21,7 @@ namespace ParkDACE
         public int IndexParkA { get; set; }
         public int NumberOfSpotsParkA { get; set; }
         XmlDocument configurationXml;
-        string[] mStrTopicsInfo = { "spotsParkA", "spotsParkB", "parksInfo" };
+        string[] mStrTopicsInfo = { "spots", "parksInfo" };
         MqttClient mClient;
         public string[] LocationsParkA { get; set; }
 
@@ -103,7 +103,7 @@ namespace ParkDACE
                                 + "Location: " + parkingSpot.Location + Environment.NewLine);
                             //Publish
                             string spotXml = serializeParkingSpot(parkingSpot);
-                            mClient.Publish(mStrTopicsInfo[1], Encoding.UTF8.GetBytes(spotXml));
+                            mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
 
                         }
                     }
@@ -159,10 +159,10 @@ namespace ParkDACE
             XmlDocument parksInfo = new XmlDocument();
             XmlElement parks = parksInfo.CreateElement("parks");
 
-            XmlElement parkA = parksInfo.CreateElement("parkA");
+            XmlElement parkA = parksInfo.CreateElement("park");
             parkA.InnerXml = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_A_Park1']").InnerXml;
 
-            XmlElement parkB = parksInfo.CreateElement("parkB");
+            XmlElement parkB = parksInfo.CreateElement("park");
             parkB.InnerXml = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_B_Park2']").InnerXml;
 
             parks.AppendChild(parkA);
@@ -170,7 +170,7 @@ namespace ParkDACE
             parksInfo.AppendChild(parks);
             
             Console.WriteLine(parksInfo.OuterXml);
-            mClient.Publish(mStrTopicsInfo[2], Encoding.UTF8.GetBytes(parksInfo.OuterXml));
+            mClient.Publish(mStrTopicsInfo[1], Encoding.UTF8.GetBytes(parksInfo.OuterXml));
         }
 
         private string serializeParkingSpot(ParkingSpot parkingSpot)
@@ -181,7 +181,7 @@ namespace ParkDACE
             {
                 using (XmlWriter writer = XmlWriter.Create(sww))
                 {
-                    serializer.Serialize(writer, parkingSpot);
+                    serializer.Serialize(writer, parkingSpot);                 
                     return sww.ToString();
                 }
             }
@@ -189,7 +189,7 @@ namespace ParkDACE
 
         private void SetupMosquitto()
         {
-            mClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
+            mClient = new MqttClient("127.0.0.1");
             mClient.Connect(Guid.NewGuid().ToString());
             if (!mClient.IsConnected)
             {
