@@ -6,6 +6,19 @@
     <location>
     </location>
     <status>
+      <value>free</value>
+      <timestamp>
+      </timestamp>
+    </status>
+    <batteryStatus>0</batteryStatus>
+  </parkingSpot>
+  <parkingSpot>
+    <id>Campus_2_B_Park2</id>
+    <type>ParkingSpot</type>
+    <name>B-2</name>
+    <location>
+    </location>
+    <status>
       <value>occupied</value>
       <timestamp>
       </timestamp>
@@ -15,28 +28,15 @@
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
     <type>ParkingSpot</type>
-    <name>B-2</name>
-    <location>
-    </location>
-    <status>
-      <value>free</value>
-      <timestamp>
-      </timestamp>
-    </status>
-    <batteryStatus>0</batteryStatus>
-  </parkingSpot>
-  <parkingSpot>
-    <id>Campus_2_B_Park2</id>
-    <type>ParkingSpot</type>
     <name>B-3</name>
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -45,11 +45,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -58,11 +58,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -71,11 +71,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -84,11 +84,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -110,11 +110,11 @@
     <location>
     </location>
     <status>
-      <value>occupied</value>
+      <value>free</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>1</batteryStatus>
+    <batteryStatus>0</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
