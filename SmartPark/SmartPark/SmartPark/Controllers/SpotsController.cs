@@ -58,7 +58,8 @@ namespace SmartPark.Controllers
 
 
         // GET api/<controller>/5
-        public IHttpActionResult GetSpot(string id)
+        [Route("api/spots/{id}/{timestamp}")]
+        public IHttpActionResult GetSpot(string id, string timestamp)
         {
             Spot spot = null;
             SqlConnection conn = null;
@@ -67,9 +68,10 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select * from ParkingSpots where name = @name";
+                cmd.CommandText = "select * from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where ps.name = @name and format(sh.timestamp,'yyyy-mm-dd') = @timestamp";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("name", id);
+                cmd.Parameters.AddWithValue("timestamp", timestamp);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {

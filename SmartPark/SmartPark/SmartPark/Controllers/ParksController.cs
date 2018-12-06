@@ -188,24 +188,23 @@ namespace SmartPark.Controllers
         [Route("api/parks/instantocupancyrate/{id}")]
         public IHttpActionResult GetInstantOccupancyrate(string id)
         {
-            List<Spot> spots = new List<Spot>();
-            Spot spot = null;
+            float occupancyrate = 0;
             SqlConnection conn = null;
             try
             {
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select p.numberofspots, count(*) as free_spots from ParkingSpots spots join Parks p on spots.id = p.id where id = @id and value='occupied'";
+                cmd.CommandText = "select count(*) from ParkingSpots where id = @id and value='occupied'";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("id", id);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    reader.GetInt16(0);
-                    reader.GetInt16(1);
-                }
-                reader.Close();
+                int number_of_ocupied_spots =  (int)cmd.ExecuteScalar();
+                SqlCommand cmd1 = new SqlCommand();
+                cmd1.CommandText = "select numberofspots from parks where id = @id";
+                cmd1.Connection = conn;
+                cmd1.Parameters.AddWithValue("id", id);
+                int number_of_spots = (int)cmd1.ExecuteScalar();
+                occupancyrate = ((float)number_of_ocupied_spots / number_of_spots)*100;
                 conn.Close();
             }
             catch (Exception)
@@ -217,7 +216,7 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            return Ok(spots);
+            return Ok(occupancyrate);
         }
     }
 }

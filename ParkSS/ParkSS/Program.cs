@@ -16,7 +16,7 @@ namespace ParkSS
     {
         MqttClient mqttClient = null;
         string[] topics = { "spots", "parksInfo" };
-        //string connectionString = System.Configuration.C
+
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ParkSS.Properties.Settings.ConnStr"].ConnectionString;
 
         static void Main(string[] args)
@@ -78,7 +78,7 @@ namespace ParkSS
                         cmd.Parameters.AddWithValue("@numberOfSpecialSpots", park.NumberOfSpecialSpots);
                         cmd.Parameters.AddWithValue("@operatingHours", park.OperatingHours);
                         cmd.Parameters.AddWithValue("@geoLocationFile", park.GeoLocationFile);
-                        cmd.Parameters.AddWithValue("@numberOfSpots", park.NumberOfSpecialSpots);
+                        cmd.Parameters.AddWithValue("@numberOfSpots", park.NumberOfSpots);
                         cmd.ExecuteNonQuery();
                     }
                     connection.Close();
@@ -107,6 +107,8 @@ namespace ParkSS
                     cmd.Parameters.AddWithValue("@value", spot.Status.Value);
                     cmd.Parameters.AddWithValue("@name", spot.Name);
                     cmd.ExecuteNonQuery();
+
+                    //Falta inserir linha no historico com o time(hora) e timestamp
                 }
                 else
                 {
@@ -119,6 +121,10 @@ namespace ParkSS
                     SqlDataReader valueFromDB = cmd.ExecuteReader();
                     valueFromDB.Read();
                     string value = valueFromDB.GetString(2), timestamp = valueFromDB.GetString(1), name = valueFromDB.GetString(0);
+                    timestamp = timestamp.Replace("/","-");
+                    string[] dateAndTime = timestamp.Split(' ');
+                    timestamp = dateAndTime[0];
+                    string time = dateAndTime[1].Substring(0, 2);
                     valueFromDB.Close();
 
                     if (value != spot.Status.Value)
@@ -157,6 +163,7 @@ namespace ParkSS
                 park.NumberOfSpecialSpots = Int16.Parse(parkNode["numberOfSpecialSpots"].InnerText);
                 park.OperatingHours = parkNode["operatingHours"].InnerText;
                 park.GeoLocationFile = parkNode["geoLocationFile"].InnerText;
+                park.NumberOfSpots = Int16.Parse(parkNode["numberOfSpots"].InnerText);
                 parks.Add(park);
             }
             return parks;
