@@ -40,7 +40,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ParkingSensorNodeDll">
-      <HintPath>..\..\..\Desktop\ParkingSensorNodeDll.dll</HintPath>
+      <HintPath>.\ParkingSensorNodeDll.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

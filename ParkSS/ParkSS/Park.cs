@@ -48,10 +48,20 @@ namespace ParkSS
             set { geoLocationFile = value; }
         }
 
-        public Park(string id, string description, int numberOfSpecialSpots, string operatingHours, string geoLocationFile)
+        private int numberOfSpots;
+
+        public int NumberOfSpots
+        {
+            get { return numberOfSpots; }
+            set { numberOfSpots = value; }
+        }
+
+
+        public Park(string id, string description,int numberOfSpots, int numberOfSpecialSpots, string operatingHours, string geoLocationFile)
         {
             this.id = id;
             this.description = description;
+            this.numberOfSpots = numberOfSpots;
             this.numberOfSpecialSpots = numberOfSpecialSpots;
             this.operatingHours = operatingHours;
             this.geoLocationFile = geoLocationFile;

@@ -104,7 +104,6 @@ namespace ParkDACE
                             //Publish
                             string spotXml = serializeParkingSpot(parkingSpot);
                             mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
-
                         }
                     }
                 }    
@@ -129,6 +128,14 @@ namespace ParkDACE
                 Status status = new Status();
                 status.Timestamp = spotInfo[2];
                 status.Value = spotInfo[3];
+                if (status.Value.Equals("0"))
+                {
+                    status.Value = "occupied";
+                }
+                else if (status.Value.Equals("1"))
+                {
+                    status.Value = "free";
+                }
                 parkingSpot.Status = status;
                 parkingSpot.BatteryStatus = Convert.ToInt32(spotInfo[4]);
 
