@@ -108,7 +108,18 @@ namespace ParkSS
                     cmd.Parameters.AddWithValue("@name", spot.Name);
                     cmd.ExecuteNonQuery();
 
-                    //Falta inserir linha no historico com o time(hora) e timestamp
+                    string[] dateAndTime = spot.Status.Timestamp.Split(' ');
+                    string[] time = dateAndTime[1].Split(':');
+                    string hour = time[0];
+                    string minute = time[1];
+
+                    cmd = new SqlCommand("INSERT INTO SpotsHistory(Name, Timestamp, Value, Hour, Minute) VALUES(@name, @timestamp, @value, @hour, @minute)", connection);
+                    cmd.Parameters.AddWithValue("@timestamp", spot.Status.Timestamp);
+                    cmd.Parameters.AddWithValue("@value", spot.Status.Value);
+                    cmd.Parameters.AddWithValue("@name", spot.Name);
+                    cmd.Parameters.AddWithValue("@hour", hour);
+                    cmd.Parameters.AddWithValue("@minute", minute);
+                    cmd.ExecuteNonQuery();
                 }
                 else
                 {
@@ -124,15 +135,18 @@ namespace ParkSS
                     timestamp = timestamp.Replace("/","-");
                     string[] dateAndTime = timestamp.Split(' ');
                     timestamp = dateAndTime[0];
-                    string time = dateAndTime[1].Substring(0, 2);
+                    string hour = dateAndTime[1].Substring(0, 2);                 
+                    string minute = dateAndTime[1].Substring(3, 2);
                     valueFromDB.Close();
 
                     if (value != spot.Status.Value)
-                    {
-                        cmd = new SqlCommand("INSERT INTO SpotsHistory(Name, Timestamp, Value) VALUES(@name, @timestamp, @value)", connection);
-                        cmd.Parameters.AddWithValue("@timestamp", timestamp);
-                        cmd.Parameters.AddWithValue("@value", value);
-                        cmd.Parameters.AddWithValue("@name", name);
+                    {                    
+                        cmd = new SqlCommand("INSERT INTO SpotsHistory(Name, Timestamp, Value, Hour, Minute) VALUES(@name, @timestamp, @value, @hour, @minute)", connection);
+                        cmd.Parameters.AddWithValue("@timestamp", spot.Status.Timestamp);
+                        cmd.Parameters.AddWithValue("@value", spot.Status.Value);
+                        cmd.Parameters.AddWithValue("@name", spot.Name);
+                        cmd.Parameters.AddWithValue("@hour", hour);
+                        cmd.Parameters.AddWithValue("@minute", minute);
                         cmd.ExecuteNonQuery();
                     }
 

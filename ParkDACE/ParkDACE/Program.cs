@@ -62,7 +62,7 @@ namespace ParkDACE
 
             IndexParkA = 0;         
             dll = new ParkingSensorNodeDll.ParkingSensorNodeDll();
-            dll.Initialize(GetAndPublishSpotsForParkA, 50);
+            dll.Initialize(GetAndPublishSpotsForParkA, 50); 
         }  
 
         private void GetAndPublishSpotsForParkB()
