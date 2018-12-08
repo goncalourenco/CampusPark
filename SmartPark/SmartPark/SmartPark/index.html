@@ -2,9 +2,314 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Web api help page</title>
 </head>
 <body>
     <h4>Help Smart Park Api</h4>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Url</th>
+                <th scope="col">Method</th>
+                <th scope="col">URL Params</th>
+                <th scope="col">Success Response</th>
+                <th scope="col">Error Response</th>
+                <th scope="col">Sample Call</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">List of available parks in the platform</th>
+                <td>/api/parks</td>
+                <td>GET</td>
+                <td></td>
+                <td class="">
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [{
+                    "Id": "Campus_2_A_Park1",
+                    ...
+                </td>
+                <td>Code: 404</td>
+                <td>/api/parks</td>
+            </tr>
+            <tr>
+                <th scope="row">Status of all parking spots in a specific park for a given moment</th>
+                <td>
+                    /api/parks/{id}/spotsstatus
+                    <br />/{timestamp}/{hour}/{minute}
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                    <br />
+                    timestamp=[string]
+                    <br />
+                    format='dd-mm-yyyy'
+                    <br />
+                    hour=[string]
+                    <br />
+                    minute=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [
+                    "A-1 - occupied",
+                    ...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/parks/Campus_2_A_Park1/spotsstatus
+                    <br />/08-12-2018/12/28
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">List of status of all parking spots in a specific park for a given time period</th>
+                <td>
+                    /api/parks/{id}/spotsstatus
+                    <br />/{timestamp_start}/{hour_start}/{minute_start}
+                    <br />/{timestamp_end}/{hour_end}/{minute_end}
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                    <br />
+                    timestamp_start=[string]
+                    <br />
+                    format='dd-mm-yyyy'
+                    <br />
+                    hour_start=[string]
+                    <br />
+                    minute_start=[string]
+                    <br />
+                    timestamp_end=[string]
+                    <br />
+                    format='dd-mm-yyyy'
+                    <br />
+                    hour_end=[string]
+                    <br />
+                    minute_end=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [
+                    "A-1 - occupied - 08-12-2018 12:28",
+                    ...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/parks/Campus_2_A_Park1/spotsstatus
+                    <br />/08-12-2018/12/28
+                    <br />/08-12-2018/12/30
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">List of free parking spots from a specific park for a given moment</th>
+                <td>
+                    /api/parks/{id}/freespots
+                    <br />/{timestamp}/{hour}/{minute}
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                    <br />
+                    timestamp=[string]
+                    <br />
+                    format='dd-mm-yyyy'
+                    <br />
+                    hour=[string]
+                    <br />
+                    minute=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [{
+                    "Id": "Campus_2_B_Park2", ...
+                    "Value": "free", ...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/parks/Campus_2_B_Park2/freespots
+                    <br />/08-12-2018/12/26
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">List of parking spots belonging to a specific park</th>
+                <td>
+                    api/parks/{id}/parkingspots
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [{
+                    "Id": "Campus_2_B_Park2", ...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/parks/Campus_2_B_Park2/parkingspots
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Detailed information about a specific park</th>
+                <td>
+                    /api/parks/{id}
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    {
+                    "Id": "Campus_2_B_Park2", ...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    api/parks/Campus_2_B_Park2
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Detailed information about a specific parking spot in a given moment</th>
+                <td>
+                    /api/spots/{id}/{timestamp}/{hour}/{minute}
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                    <br />
+                    timestamp=[string]
+                    <br />
+                    format='dd-mm-yyyy'
+                    <br />
+                    hour=[string]
+                    <br />
+                    minute=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    {
+                    "Id": "Campus_2_A_Park1",
+                    "Name": "A-1",...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/spots/A-1/08-12-2018/12/28
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    List of parking spots sensors that need to be
+                    <br />replaced because of its critical battery level
+                </th>
+                <td>
+                    /api/spots/lowbatteryparkingspots
+                </td>
+                <td>GET</td>
+                <td></td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [{
+                    "Id": "Campus_2_A_Park1",
+                    "BatteryStatus": 0},...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/spots/lowbatteryparkingspots
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    List of parking spots sensors that need to be replaced for a specific park
+                </th>
+                <td>
+                    /api/parks/{id}/lowbatteryparkingspots
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    [{
+                    "Id": "Campus_2_B_Park2",
+                    "BatteryStatus": 0},...
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/parks/Campus_2_B_Park2/lowbatteryparkingspots
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    Instant occupancy rate in a specific park
+                </th>
+                <td>
+                    /api/parks/{id}/instantocupancyrate
+                </td>
+                <td>GET</td>
+                <td>
+                    Required:
+                    <br />
+                    id=[string]
+                </td>
+                <td>
+                    Code: 200
+                    <br />
+                    Content:
+                    <br />
+                    80
+                </td>
+                <td>Code: 404</td>
+                <td>
+                    /api/parks/Campus_2_B_Park2/instantocupancyrate
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

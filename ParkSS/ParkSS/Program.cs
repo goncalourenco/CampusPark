@@ -99,7 +99,7 @@ namespace ParkSS
                 reader.Close();
                 if (!hasRows)
                 {
-                    cmd = new SqlCommand("INSERT INTO ParkingSpots(Name, Id, Location, BatteryStatus, Timestamp, Value) VALUES(@name, @id, @location, @batteryStatus, @timestamp, @value)", connection);
+                    cmd = new SqlCommand("INSERT INTO ParkingSpots(Name, Park_Id, Location, BatteryStatus, Timestamp, Value) VALUES(@name, @id, @location, @batteryStatus, @timestamp, @value)", connection);
                     cmd.Parameters.AddWithValue("@id", spot.Id);
                     cmd.Parameters.AddWithValue("@location", spot.Location);
                     cmd.Parameters.AddWithValue("@batteryStatus", spot.BatteryStatus);
@@ -108,13 +108,16 @@ namespace ParkSS
                     cmd.Parameters.AddWithValue("@name", spot.Name);
                     cmd.ExecuteNonQuery();
 
-                    string[] dateAndTime = spot.Status.Timestamp.Split(' ');
+                    string timestamp = spot.Status.Timestamp;
+                    timestamp = timestamp.Replace("/", "-");
+                    string[] dateAndTime = timestamp.Split(' ');
+                    timestamp = dateAndTime[0];
                     string[] time = dateAndTime[1].Split(':');
                     string hour = time[0];
                     string minute = time[1];
 
                     cmd = new SqlCommand("INSERT INTO SpotsHistory(Name, Timestamp, Value, Hour, Minute) VALUES(@name, @timestamp, @value, @hour, @minute)", connection);
-                    cmd.Parameters.AddWithValue("@timestamp", spot.Status.Timestamp);
+                    cmd.Parameters.AddWithValue("@timestamp", timestamp);
                     cmd.Parameters.AddWithValue("@value", spot.Status.Value);
                     cmd.Parameters.AddWithValue("@name", spot.Name);
                     cmd.Parameters.AddWithValue("@hour", hour);
@@ -131,7 +134,7 @@ namespace ParkSS
                     cmd.ExecuteNonQuery();
                     SqlDataReader valueFromDB = cmd.ExecuteReader();
                     valueFromDB.Read();
-                    string value = valueFromDB.GetString(2), timestamp = valueFromDB.GetString(1), name = valueFromDB.GetString(0);
+                    string value = valueFromDB.GetString(2), timestamp = spot.Status.Timestamp, name = valueFromDB.GetString(0);
                     timestamp = timestamp.Replace("/","-");
                     string[] dateAndTime = timestamp.Split(' ');
                     timestamp = dateAndTime[0];
@@ -142,7 +145,7 @@ namespace ParkSS
                     if (value != spot.Status.Value)
                     {                    
                         cmd = new SqlCommand("INSERT INTO SpotsHistory(Name, Timestamp, Value, Hour, Minute) VALUES(@name, @timestamp, @value, @hour, @minute)", connection);
-                        cmd.Parameters.AddWithValue("@timestamp", spot.Status.Timestamp);
+                        cmd.Parameters.AddWithValue("@timestamp", timestamp);
                         cmd.Parameters.AddWithValue("@value", spot.Status.Value);
                         cmd.Parameters.AddWithValue("@name", spot.Name);
                         cmd.Parameters.AddWithValue("@hour", hour);

@@ -7,7 +7,7 @@ namespace SmartPark.Models
 {
     public class Spot
     {
-        public string Id { get; set; }
+        public string Park_Id { get; set; }
 
         public string Name { get; set; }
 

@@ -52,7 +52,7 @@ namespace SmartPark.Controllers
             return Ok(parks);
         }
 
-        // GET api/<controller>/5
+        // GET api/parks/{id}
         public IHttpActionResult Get(string id)
         {
             Park park = null;
@@ -93,8 +93,8 @@ namespace SmartPark.Controllers
         }
 
         
-        [Route("api/parks/parkingspots/{id}")]
-        public IHttpActionResult GetParkingSpotForSpecificPark(string id)
+        [Route("api/parks/{id}/parkingspots")]
+        public IHttpActionResult GetParkingSpotsForSpecificPark(string id)
         {
             List<Spot> spots = new List<Spot>();
             Spot spot = null;
@@ -104,7 +104,7 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select * from ParkingSpots where id = @id";
+                cmd.CommandText = "select * from ParkingSpots where park_id = @id";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("id", id);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -112,7 +112,7 @@ namespace SmartPark.Controllers
                 {
                     spot = new Spot
                     {
-                        Id = (string)reader["Id"],
+                        Park_Id = (string)reader["Park_Id"],
                         Name = (string)reader["Name"],
                         Status = new Status
                         {
@@ -139,7 +139,7 @@ namespace SmartPark.Controllers
             return Ok(spots);
         }
 
-        [Route("api/parks/parkingspotswithlowbattery/{id}")]
+        [Route("api/parks/{id}/lowbatteryparkingspots")]
         public IHttpActionResult GetParkingSpotsWithLowBattery(string id)
         {
             List<Spot> spots = new List<Spot>();
@@ -150,7 +150,7 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select * from ParkingSpots where id = @id and batterystatus = '0'";
+                cmd.CommandText = "select * from ParkingSpots where park_id = @id and batterystatus = '0'";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("id", id);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -158,7 +158,7 @@ namespace SmartPark.Controllers
                 {
                     spot = new Spot
                     {
-                        Id = (string)reader["Id"],
+                        Park_Id = (string)reader["Park_Id"],
                         Name = (string)reader["Name"],
                         Status = new Status
                         {
@@ -185,7 +185,7 @@ namespace SmartPark.Controllers
             return Ok(spots);
         }
 
-        [Route("api/parks/instantocupancyrate/{id}")]
+        [Route("api/parks/{id}/instantocupancyrate")]
         public IHttpActionResult GetInstantOccupancyrate(string id)
         {
             float occupancyrate = 0;
@@ -195,7 +195,7 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select count(*) from ParkingSpots where id = @id and value='occupied'";
+                cmd.CommandText = "select count(*) from ParkingSpots where park_id = @id and value='occupied'";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("id", id);
                 int number_of_ocupied_spots =  (int)cmd.ExecuteScalar();
@@ -217,6 +217,142 @@ namespace SmartPark.Controllers
             }
 
             return Ok(occupancyrate);
+        }
+
+        [Route("api/parks/{id}/freespots/{timestamp}/{hour}/{minute}")]
+        public IHttpActionResult GetFreeSpots(string id, string timestamp, string hour, string minute)
+        {
+            Spot spot = null;
+            List<Spot> spots = new List<Spot>();
+            SqlConnection conn = null;
+            try
+            {
+                conn = new SqlConnection(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "select ps.name, park_id, location, BatteryStatus, CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) as TimeStamp, sh.Value from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where sh.Timestamp = @timestamp and sh.Hour = @hour and sh.Minute = @minute and sh.value = 'free' and ps.park_id = @park_id";
+                cmd.Connection = conn;
+                cmd.Parameters.AddWithValue("timestamp", timestamp);
+                cmd.Parameters.AddWithValue("hour", hour);
+                cmd.Parameters.AddWithValue("minute", minute);
+                cmd.Parameters.AddWithValue("park_id", id);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    spot = new Spot
+                    {
+                        Park_Id = (string)reader["Park_Id"],
+                        Name = (string)reader["Name"],
+                        Status = new Status
+                        {
+                            Value = (string)reader["Value"],
+                            Timestamp = (string)reader["Timestamp"]
+                        },
+                        Location = (string)reader["Location"],
+                        BatteryStatus = (int)reader["BatteryStatus"]
+                    };
+                    spots.Add(spot);
+                }
+                reader.Close();
+                conn.Close();
+                if (spots.Count == 0)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                return NotFound();
+            }
+
+            return Ok(spots);
+        }
+
+        [Route("api/parks/{id}/spotsstatus/{timestamp}/{hour}/{minute}")]
+        public IHttpActionResult GetSpotsStatus(string id, string timestamp, string hour, string minute)
+        {
+            List<String> status = new List<String>();
+            SqlConnection conn = null;
+            try
+            {
+                conn = new SqlConnection(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "select sh.name, sh.Value from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where sh.Timestamp = @timestamp and sh.Hour = @hour and sh.Minute = @minute and ps.park_id = @park_id";
+                cmd.Connection = conn;
+                cmd.Parameters.AddWithValue("timestamp", timestamp);
+                cmd.Parameters.AddWithValue("hour", hour);
+                cmd.Parameters.AddWithValue("minute", minute);
+                cmd.Parameters.AddWithValue("park_id", id);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    status.Add(reader.GetString(0) + " - " + reader.GetString(1));
+                }
+                reader.Close();
+                conn.Close();
+                if (status.Count == 0)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                return NotFound();
+            }
+
+            return Ok(status);
+        }
+
+        [Route("api/parks/{id}/spotsstatus/{timestamp_start}/{hour_start}/{minute_start}/{timestamp_end}/{hour_end}/{minute_end}")]
+        public IHttpActionResult GetSpotsStatusForAGivenPeriod(string id, string timestamp_start, string hour_start, string minute_start, string timestamp_end, string hour_end, string minute_end)
+        {
+            List<String> status = new List<String>();
+            SqlConnection conn = null;
+            try
+            {
+                conn = new SqlConnection(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "select sh.Name, sh.Value, CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) as Timestamp from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where ps.park_id = @park_id and CAST(CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) AS datetime) >= CAST(CONCAT(@timestamp_start, ' ', @hour_start, ':', @minute_start) AS datetime) and CAST(CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) AS datetime) <= CAST(CONCAT(@timestamp_end, ' ', @hour_end, ':', @minute_end) AS datetime)";
+                cmd.Connection = conn;
+                cmd.Parameters.AddWithValue("park_id", id);
+                cmd.Parameters.AddWithValue("timestamp_start", timestamp_start);
+                cmd.Parameters.AddWithValue("hour_start", hour_start);
+                cmd.Parameters.AddWithValue("minute_start", minute_start);
+                cmd.Parameters.AddWithValue("timestamp_end", timestamp_end);
+                cmd.Parameters.AddWithValue("hour_end", hour_end);
+                cmd.Parameters.AddWithValue("minute_end", minute_end);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    status.Add(reader.GetString(0) + " - " + reader.GetString(1) + " - " + reader.GetString(2));
+                }
+                reader.Close();
+                conn.Close();
+                if (status.Count == 0)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                return NotFound();
+            }
+
+            return Ok(status);
         }
     }
 }

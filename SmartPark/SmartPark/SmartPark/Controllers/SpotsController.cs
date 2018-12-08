@@ -27,7 +27,7 @@ namespace SmartPark.Controllers
                 {
                     Spot spot = new Spot
                     {
-                        Id = (string)reader["Id"],
+                        Park_Id = (string)reader["Park_Id"],
                         Name = (string)reader["Name"],
                         Status = new Status
                         {
@@ -56,10 +56,9 @@ namespace SmartPark.Controllers
             return Ok(spots);
         }
 
-
-        // GET api/<controller>/5
-        [Route("api/spots/{id}/{timestamp}")]
-        public IHttpActionResult GetSpot(string id, string timestamp)
+        
+        [Route("api/spots/{id}/{timestamp}/{hour}/{minute}")]
+        public IHttpActionResult GetSpot(string id, string timestamp, string hour, string minute)
         {
             Spot spot = null;
             SqlConnection conn = null;
@@ -68,16 +67,18 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select * from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where ps.name = @name and format(sh.timestamp,'yyyy-mm-dd') = @timestamp";
+                cmd.CommandText = "select ps.name, park_id, location, BatteryStatus, CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) as TimeStamp, sh.Value from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where ps.name = @name and sh.Timestamp = @timestamp and sh.Hour = @hour and sh.Minute = @minute";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("name", id);
                 cmd.Parameters.AddWithValue("timestamp", timestamp);
+                cmd.Parameters.AddWithValue("hour", hour);
+                cmd.Parameters.AddWithValue("minute", minute);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     spot = new Spot
                     {
-                        Id = (string)reader["Id"],
+                        Park_Id = (string)reader["Park_Id"],
                         Name = (string)reader["Name"],
                         Status = new Status
                         {
@@ -90,6 +91,10 @@ namespace SmartPark.Controllers
                 }
                 reader.Close();
                 conn.Close();
+                if (spot == null)
+                {
+                   return NotFound();
+                }
             }
             catch (Exception)
             {
