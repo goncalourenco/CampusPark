@@ -31,7 +31,8 @@ namespace SmartPark.Controllers
                         Description = (string)reader["Description"],
                         NumberOfSpecialSpots = (int)reader["NumberOfSpecialSpots"],
                         OperatingHours = (string)reader["OperatingHours"],
-                        GeoLocationFile = (string)reader["GeoLocationFile"]
+                        GeoLocationFile = (string)reader["GeoLocationFile"],
+                        NumberOfSpots = (int)reader["NumberOfSpots"]
                     };
                     parks.Add(park);
                 }
@@ -74,7 +75,8 @@ namespace SmartPark.Controllers
                         Description = (string)reader["Description"],
                         NumberOfSpecialSpots = (int)reader["NumberOfSpecialSpots"],
                         OperatingHours = (string)reader["OperatingHours"],
-                        GeoLocationFile = (string)reader["GeoLocationFile"]
+                        GeoLocationFile = (string)reader["GeoLocationFile"],
+                        NumberOfSpots = (int)reader["NumberOfSpots"]
                     };
                 }
                 reader.Close();

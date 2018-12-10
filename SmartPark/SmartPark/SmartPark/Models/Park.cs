@@ -17,5 +17,7 @@ namespace SmartPark.Models
 
         public String GeoLocationFile { get; set; }
 
+        public int NumberOfSpots { get; set; }
+
     }
 }
