@@ -146,11 +146,11 @@ namespace ParkDACE
                 status.Value = spotInfo[3];
                 if (status.Value.Equals("0"))
                 {
-                    status.Value = "occupied";
+                    status.Value = "free";
                 }
                 else if (status.Value.Equals("1"))
                 {
-                    status.Value = "free";
+                    status.Value = "occupied";
                 }
                 parkingSpot.Status = status;
                 parkingSpot.BatteryStatus = Convert.ToInt32(spotInfo[4]);
