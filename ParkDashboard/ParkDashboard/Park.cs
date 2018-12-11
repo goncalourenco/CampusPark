@@ -19,5 +19,7 @@ namespace ParkDashboard
         public String GeoLocationFile { get; set; }
 
         public int NumberOfSpots { get; set; }
+
+        public string Timestamp { get; set; }
     }
 }

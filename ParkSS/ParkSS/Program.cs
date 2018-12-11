@@ -72,13 +72,14 @@ namespace ParkSS
                     reader.Close();
                     if (!hasRows)
                     {
-                        cmd = new SqlCommand("INSERT INTO Parks(Id, Description, NumberOfSpecialSpots, OperatingHours, GeoLocationFile, NumberOfSpots) VALUES(@id, @description, @numberOfSpecialSpots, @operatingHours, @geoLocationFile, @numberOfSpots)", connection);
+                        cmd = new SqlCommand("INSERT INTO Parks(Id, Description, NumberOfSpecialSpots, OperatingHours, GeoLocationFile, NumberOfSpots, Timestamp) VALUES(@id, @description, @numberOfSpecialSpots, @operatingHours, @geoLocationFile, @numberOfSpots, @timestamp)", connection);
                         cmd.Parameters.AddWithValue("@id", park.Id);
                         cmd.Parameters.AddWithValue("@description", park.Description);
                         cmd.Parameters.AddWithValue("@numberOfSpecialSpots", park.NumberOfSpecialSpots);
                         cmd.Parameters.AddWithValue("@operatingHours", park.OperatingHours);
                         cmd.Parameters.AddWithValue("@geoLocationFile", park.GeoLocationFile);
                         cmd.Parameters.AddWithValue("@numberOfSpots", park.NumberOfSpots);
+                        cmd.Parameters.AddWithValue("@timestamp", park.Timestamp);
                         cmd.ExecuteNonQuery();
                     }
                     connection.Close();
@@ -181,6 +182,7 @@ namespace ParkSS
                 park.OperatingHours = parkNode["operatingHours"].InnerText;
                 park.GeoLocationFile = parkNode["geoLocationFile"].InnerText;
                 park.NumberOfSpots = Int16.Parse(parkNode["numberOfSpots"].InnerText);
+                park.Timestamp = parkNode["timestamp"].InnerText;
                 parks.Add(park);
             }
             return parks;

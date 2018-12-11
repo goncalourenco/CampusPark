@@ -24,12 +24,13 @@ namespace ParkDACE
         string[] mStrTopicsInfo = { "spots", "parksInfo" };
         MqttClient mClient;
         public string[] LocationsParkA { get; set; }
-
+        public string ParkA_ID { get; set; }
+        public string ParkB_ID { get; set; }
 
         static void Main(string[] args)
         {
             Program program = new Program();
-            program.Setup(); 
+            program.Setup();
         }
 
         private void Setup()
@@ -37,9 +38,15 @@ namespace ParkDACE
             configurationXml = new XmlDocument();
             configurationXml.Load("ParkingNodesConfig.xml");
             SetupMosquitto();
-            NumberOfSpotsParkA = Int32.Parse(configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_A_Park1']/numberOfSpots").InnerText);
 
-            string strPathParkA = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_A_Park1.xlsx";
+            ParkB_ID = configurationXml.SelectSingleNode("/parkingLocation/provider[connectionType='SOAP']/parkInfo/id").InnerText;
+            ParkA_ID = configurationXml.SelectSingleNode("/parkingLocation/provider[connectionType='DLL']/parkInfo/id").InnerText;
+
+            NumberOfSpotsParkA = Int32.Parse(configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='{ParkA_ID}']/numberOfSpots").InnerText);
+            var fileNameParkA = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='{ParkA_ID}']/geoLocationFile").InnerText;
+
+
+            string strPathParkA = AppDomain.CurrentDomain.BaseDirectory.ToString() + fileNameParkA;
             LocationsParkA = ReadNxMFromExcelFile(strPathParkA, "A6", "B" + (5 + NumberOfSpotsParkA)).ToArray();
 
             var startTimeSpan = TimeSpan.Zero;
@@ -59,36 +66,37 @@ namespace ParkDACE
                     periodTimeSpan = TimeSpan.FromMinutes(refreshRate);
                     break;
             }
-           
-            
+
+
             GetAndPublishInfoForParks();
 
             var timer = new System.Threading.Timer((e) =>
             {
                 Init();
-              
+
             }, null, startTimeSpan, periodTimeSpan);
-            
+
             Console.ReadKey();
         }
 
         public void Init()
-        {       
+        {
             GetAndPublishSpotsForParkB();
 
-            IndexParkA = 0;         
+            IndexParkA = 0;
             dll = new ParkingSensorNodeDll.ParkingSensorNodeDll();
-            dll.Initialize(GetAndPublishSpotsForParkA, 50); 
-        }  
+            dll.Initialize(GetAndPublishSpotsForParkA, 50);
+        }
 
         private void GetAndPublishSpotsForParkB()
         {
             ParkingSpot[] arraySpotsB;
-            string strPathParkB = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"Campus_2_B_Park2.xlsx";
+            var fileNameParkB = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='{ParkB_ID}']/geoLocationFile").InnerText;
+            string strPathParkB = AppDomain.CurrentDomain.BaseDirectory.ToString() + fileNameParkB;
             using (SOAPSpotBotServiceClient client = new SOAPSpotBotServiceClient())
             {
                 //Parques do B
-                XmlNode numberOfSpotsNode = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_B_Park2']/numberOfSpots");
+                XmlNode numberOfSpotsNode = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='{ParkB_ID}']/numberOfSpots");
                 int numberOfSpots = Int32.Parse(numberOfSpotsNode.InnerText);
                 arraySpotsB = client.GetParkingSpotsInfo(numberOfSpots);
 
@@ -122,7 +130,7 @@ namespace ParkDACE
                             mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
                         }
                     }
-                }    
+                }
             }
         }
 
@@ -183,15 +191,23 @@ namespace ParkDACE
             XmlElement parks = parksInfo.CreateElement("parks");
 
             XmlElement parkA = parksInfo.CreateElement("park");
-            parkA.InnerXml = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_A_Park1']").InnerXml;
+            parkA.InnerXml = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='{ParkA_ID}']").InnerXml;
+            XmlElement timestampParkA = parksInfo.CreateElement("timestamp");
+            timestampParkA.InnerText = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            
 
             XmlElement parkB = parksInfo.CreateElement("park");
-            parkB.InnerXml = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='Campus_2_B_Park2']").InnerXml;
+            parkB.InnerXml = configurationXml.SelectSingleNode($"/parkingLocation/provider/parkInfo[id='{ParkB_ID}']").InnerXml;
+            XmlElement timestampParkB = parksInfo.CreateElement("timestamp");
+            timestampParkB.InnerText = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
+
+            parkA.AppendChild(timestampParkA);
+            parkB.AppendChild(timestampParkB);
             parks.AppendChild(parkA);
             parks.AppendChild(parkB);
             parksInfo.AppendChild(parks);
-            
+
             Console.WriteLine(parksInfo.OuterXml);
             mClient.Publish(mStrTopicsInfo[1], Encoding.UTF8.GetBytes(parksInfo.OuterXml));
         }
@@ -204,7 +220,7 @@ namespace ParkDACE
             {
                 using (XmlWriter writer = XmlWriter.Create(sww))
                 {
-                    serializer.Serialize(writer, parkingSpot);                 
+                    serializer.Serialize(writer, parkingSpot);
                     return sww.ToString();
                 }
             }

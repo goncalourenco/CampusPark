@@ -40,8 +40,15 @@ namespace ParkSS
             set { operatingHours = value; }
         }
 
-        private String geoLocationFile;
+        
+        private string timestamp;
+        public string Timestamp
+        {
+            get { return timestamp; }
+            set { timestamp = value; }
+        }
 
+        private String geoLocationFile;
         public String GeoLocationFile
         {
             get { return geoLocationFile; }
@@ -57,7 +64,7 @@ namespace ParkSS
         }
 
 
-        public Park(string id, string description,int numberOfSpots, int numberOfSpecialSpots, string operatingHours, string geoLocationFile)
+        public Park(string id, string description,int numberOfSpots, int numberOfSpecialSpots, string operatingHours, string geoLocationFile, string timestamp)
         {
             this.id = id;
             this.description = description;
@@ -65,6 +72,7 @@ namespace ParkSS
             this.numberOfSpecialSpots = numberOfSpecialSpots;
             this.operatingHours = operatingHours;
             this.geoLocationFile = geoLocationFile;
+            this.timestamp = timestamp;
         }
 
         public Park()

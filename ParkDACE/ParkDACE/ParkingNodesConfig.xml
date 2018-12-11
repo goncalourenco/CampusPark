@@ -2,7 +2,7 @@
 
     <provider>
         <connectionType>DLL</connectionType>
-        <endpoint>DLLname</endpoint>
+        <endpoint>ParkingSensorNodeDll</endpoint>
         <parkInfo>
             <id>Campus_2_A_Park1</id>
             <description>Parking in the campus 2 near the building A entrance</description>

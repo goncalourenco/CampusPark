@@ -45,6 +45,7 @@ namespace ParkDashboard
                 richTextBox.AppendText("\nNumber of Spots : " + park.NumberOfSpots);
                 richTextBox.AppendText("\nOperating Hours : " + park.OperatingHours);
                 richTextBox.AppendText("\nNumber of Special Spots : " + park.NumberOfSpecialSpots);
+                richTextBox.AppendText("\nTimestamp : " + park.Timestamp);
                 richTextBox.AppendText("\nGeoLocation File: " + park.GeoLocationFile + "\n\n");
             }
             else

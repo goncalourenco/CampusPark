@@ -19,5 +19,7 @@ namespace SmartPark.Models
 
         public int NumberOfSpots { get; set; }
 
+        public String Timestamp { get; set; }
+
     }
 }
