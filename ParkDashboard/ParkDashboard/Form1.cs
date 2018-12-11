@@ -143,7 +143,7 @@ namespace ParkDashboard
             }
             else
             {
-                richTextBox.AppendText("Error connecting to client. \n");
+                richTextBox.AppendText("Error connecting to the RESTful service. \n");
             }
         }
 
