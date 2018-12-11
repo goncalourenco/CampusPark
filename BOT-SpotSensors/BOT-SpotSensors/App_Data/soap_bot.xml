@@ -84,11 +84,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -97,11 +97,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -110,11 +110,11 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
   <parkingSpot>
     <id>Campus_2_B_Park2</id>
@@ -123,10 +123,10 @@
     <location>
     </location>
     <status>
-      <value>free</value>
+      <value>occupied</value>
       <timestamp>
       </timestamp>
     </status>
-    <batteryStatus>0</batteryStatus>
+    <batteryStatus>1</batteryStatus>
   </parkingSpot>
 </park>

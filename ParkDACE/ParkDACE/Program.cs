@@ -43,7 +43,23 @@ namespace ParkDACE
             LocationsParkA = ReadNxMFromExcelFile(strPathParkA, "A6", "B" + (5 + NumberOfSpotsParkA)).ToArray();
 
             var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromMinutes(Int16.Parse(configurationXml.SelectSingleNode("/parkingLocation/@refreshRate").InnerText));
+
+            var units = configurationXml.SelectSingleNode("/parkingLocation/@units").InnerText;
+            TimeSpan periodTimeSpan;
+            int refreshRate = Int16.Parse(configurationXml.SelectSingleNode("/parkingLocation/@refreshRate").InnerText);
+            switch (units)
+            {
+                case "hours":
+                    periodTimeSpan = TimeSpan.FromHours(refreshRate);
+                    break;
+                case "seconds":
+                    periodTimeSpan = TimeSpan.FromSeconds(refreshRate);
+                    break;
+                default: //minutes
+                    periodTimeSpan = TimeSpan.FromMinutes(refreshRate);
+                    break;
+            }
+           
             
             GetAndPublishInfoForParks();
 
