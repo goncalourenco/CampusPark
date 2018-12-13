@@ -120,14 +120,16 @@ namespace ParkDACE
                         if (parkingSpot.Name == locations[i])
                         {
                             parkingSpot.Location = locations[++i];
+                            parkingSpot.Status.Timestamp = DateTime.Parse(parkingSpot.Status.Timestamp).ToString("dd/MM/yyyy HH:mm:ss");
                             Console.WriteLine("Name: " + parkingSpot.Name + Environment.NewLine
                                 + "ID: " + parkingSpot.Id + Environment.NewLine
                                 + "Status: " + parkingSpot.Status.Value + Environment.NewLine
                                 + "Timestamp:" + parkingSpot.Status.Timestamp + Environment.NewLine
                                 + "Location: " + parkingSpot.Location + Environment.NewLine);
+                            
                             //Publish
-                            string spotXml = serializeParkingSpot(parkingSpot);
-                            mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
+                           string spotXml = serializeParkingSpot(parkingSpot);
+                           mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
                         }
                     }
                 }
@@ -163,12 +165,12 @@ namespace ParkDACE
                 parkingSpot.Status = status;
                 parkingSpot.BatteryStatus = Convert.ToInt32(spotInfo[4]);
 
-
                 for (int i = 0; i < LocationsParkA.Length; i++)
                 {
                     if (parkingSpot.Name == LocationsParkA[i])
                     {
                         parkingSpot.Location = LocationsParkA[++i];
+                        parkingSpot.Status.Timestamp = DateTime.Parse(parkingSpot.Status.Timestamp).ToString("dd/MM/yyyy HH:mm:ss");
                         Console.WriteLine("Name: " + parkingSpot.Name + Environment.NewLine
                         + "ID: " + parkingSpot.Id + Environment.NewLine
                         + "Status: " + parkingSpot.Status.Value + Environment.NewLine
@@ -180,8 +182,8 @@ namespace ParkDACE
                 IndexParkA++;
 
                 //publish
-                string spotXml = serializeParkingSpot(parkingSpot);
-                mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
+               string spotXml = serializeParkingSpot(parkingSpot);
+               mClient.Publish(mStrTopicsInfo[0], Encoding.UTF8.GetBytes(spotXml));
             }
         }
 
@@ -248,8 +250,8 @@ namespace ParkDACE
             Excel.Workbook workbook = excelApp.Workbooks.Open(filename);
             Excel.Worksheet worksheet = workbook.ActiveSheet;
 
-            //n-> linha ex A1 PODE SER AO CONTRARIO
-            //m-> coluna ex B3 PODE SER AO CONTRARIO
+            //n-> linha ex A1
+            //m-> coluna ex B3
             Excel.Range range = worksheet.get_Range(N, M);
 
             foreach (Excel.Range item in range)
