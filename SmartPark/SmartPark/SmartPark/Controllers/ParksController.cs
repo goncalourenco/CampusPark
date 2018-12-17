@@ -326,7 +326,7 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select sh.Name, sh.Value, CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) as Timestamp from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where ps.park_id = @park_id and CAST(CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) AS datetime) >= CAST(CONCAT(@timestamp_start, ' ', @hour_start, ':', @minute_start) AS datetime) and CAST(CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) AS datetime) <= CAST(CONCAT(@timestamp_end, ' ', @hour_end, ':', @minute_end) AS datetime)";
+                cmd.CommandText = "select sh.Name, sh.Value, CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) as Timestamp from ParkingSpots ps join SpotsHistory sh on ps.name = sh.name where ps.park_id = @park_id and PARSE(CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) AS datetime2 USING 'pt-PT') >= PARSE(CONCAT(@timestamp_start, ' ', @hour_start, ':', @minute_start) AS datetime2 USING 'pt-PT') and PARSE(CONCAT(sh.Timestamp, ' ', sh.Hour, ':', sh.Minute) AS datetime2 USING 'pt-PT') <= PARSE(CONCAT(@timestamp_end, ' ', @hour_end, ':', @minute_end) AS datetime2 USING 'pt-PT')";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("park_id", id);
                 cmd.Parameters.AddWithValue("timestamp_start", timestamp_start);
