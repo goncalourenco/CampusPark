@@ -17,10 +17,10 @@ namespace BOT_SpotSensors
 
         public List<ParkingSpot> GetParkingSpotsInfo(int numberOfSpots)
         {
-            RemoveAllXmlChilds();
-            AddSpots(numberOfSpots);
+            //RemoveAllXmlChilds();
+            String spotsxml = AddSpots(numberOfSpots);
             XmlDocument doc = new XmlDocument();
-            doc.Load(strPath);
+            doc.LoadXml(spotsxml);
             XmlNodeList lst = doc.SelectNodes("//parkingSpot");
             List<ParkingSpot> parkingSpots = new List<ParkingSpot>();
 
@@ -45,13 +45,15 @@ namespace BOT_SpotSensors
             return parkingSpots;
         }
 
-        private void AddSpots(int numberOfSpots)
+        private String AddSpots(int numberOfSpots)
         {
             XmlDocument doc = new XmlDocument();
            
+            /*
             doc.Load(strPath);
-
-            XmlNode root = doc.SelectSingleNode("/park");
+            */
+            XmlNode root = doc.CreateElement("park");
+            doc.AppendChild(root);
 
             string[] values = new string[] { "free", "occupied" };
             string[] bateryStatus = new string[] { "0", "1" };
@@ -94,8 +96,11 @@ namespace BOT_SpotSensors
                 status.AppendChild(timestamp);
                 parkingSpot.AppendChild(batteryStatus);
 
-                doc.Save(strPath);
+                //doc.Save(strPath);
+                doc.Save(Console.Out);
             }
+
+            return doc.OuterXml;
         }
 
         public String GetParkingSpotsInfoXML(int numberOfSpots)
