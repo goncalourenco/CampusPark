@@ -171,7 +171,6 @@ namespace ParkDashboard
             {
                 MessageBox.Show("Please insert the time in the following format: hh:mm");
                 return;
-
             }
             string[] timeStart = textBoxStartingHour.Text.Trim().Split(':');
             string[] timeEnd = textBoxEndingHour.Text.Trim().Split(':');
@@ -350,7 +349,8 @@ namespace ParkDashboard
             }       
             if (textBoxSpotName.Text.Trim() == "")
             {
-                MessageBox.Show("Please fill the spot name text");
+                MessageBox.Show("Please fill the spot name");
+                return;
             }
             string[] time = textBoxGivenMomentHourSpot.Text.Trim().Split(':');
             string spotID = textBoxSpotName.Text.Trim();
