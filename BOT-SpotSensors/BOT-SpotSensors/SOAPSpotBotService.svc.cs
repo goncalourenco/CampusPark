@@ -8,16 +8,12 @@ using System.Text;
 using System.Xml;
 
 namespace BOT_SpotSensors
-{
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+{   
     public class SOAPSpotBotService : ISOAPSpotBotService
     {
-        string strPath = AppDomain.CurrentDomain.BaseDirectory.ToString() + @"App_data\\soap_bot.xml";
 
         public List<ParkingSpot> GetParkingSpotsInfo(int numberOfSpots)
         {
-            //RemoveAllXmlChilds();
             String spotsxml = AddSpots(numberOfSpots);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(spotsxml);
@@ -29,7 +25,8 @@ namespace BOT_SpotSensors
                 Status status = new Status();
                 XmlNode valueNode = doc.SelectSingleNode($"/park/parkingSpot[name='{spotNode["name"].InnerText}']/status/value");
                 status.Value = valueNode.InnerText;
-                status.Timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                XmlNode valueTimestamp = doc.SelectSingleNode($"/park/parkingSpot[name='{spotNode["name"].InnerText}']/status/timestamp");
+                status.Timestamp = valueTimestamp.InnerText;
 
                 ParkingSpot parkingSpot = new ParkingSpot(
                     spotNode["id"].InnerText,
@@ -41,17 +38,12 @@ namespace BOT_SpotSensors
 
                 parkingSpots.Add(parkingSpot);
             }
-
             return parkingSpots;
         }
 
         private String AddSpots(int numberOfSpots)
         {
             XmlDocument doc = new XmlDocument();
-           
-            /*
-            doc.Load(strPath);
-            */
             XmlNode root = doc.CreateElement("park");
             doc.AppendChild(root);
 
@@ -81,7 +73,7 @@ namespace BOT_SpotSensors
                 value.InnerText = GenerateRandomValueFromStringArray(values);
 
                 XmlElement timestamp = doc.CreateElement("timestamp");
-                timestamp.InnerText = "";
+                timestamp.InnerText = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 
                 XmlElement batteryStatus = doc.CreateElement("batteryStatus");
                 batteryStatus.InnerText = GenerateRandomValueFromStringArray(bateryStatus);
@@ -96,7 +88,6 @@ namespace BOT_SpotSensors
                 status.AppendChild(timestamp);
                 parkingSpot.AppendChild(batteryStatus);
 
-                //doc.Save(strPath);
                 doc.Save(Console.Out);
             }
 
@@ -105,30 +96,17 @@ namespace BOT_SpotSensors
 
         public String GetParkingSpotsInfoXML(int numberOfSpots)
         {
-            AddSpots(numberOfSpots);
+            string xmlSpots = AddSpots(numberOfSpots);
             XmlDocument doc = new XmlDocument();
-            doc.Load(strPath);
+            doc.LoadXml(xmlSpots);
             return doc.OuterXml;
         }
 
         private string GenerateRandomValueFromStringArray(string[] values)
         {
             Random random = new Random();
-
             int index = random.Next(values.Length);
-
             return values[index];
-        }
-
-        private void RemoveAllXmlChilds()
-        {
-            XmlDocument xml = new XmlDocument();
-            xml.Load(strPath);
-
-            XmlNode root = xml.SelectSingleNode("/park");
-            root.RemoveAll();
-
-            xml.Save(strPath);
         }
     }
 }
