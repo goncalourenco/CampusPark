@@ -154,7 +154,7 @@ namespace SmartPark.Controllers
                 conn = new SqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "select * from ParkingSpots where park_id = @id and batterystatus = '0'";
+                cmd.CommandText = "select * from ParkingSpots where park_id = @id and batterystatus = '1'";
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("id", id);
                 SqlDataReader reader = cmd.ExecuteReader();

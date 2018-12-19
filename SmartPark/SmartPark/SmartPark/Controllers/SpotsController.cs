@@ -21,7 +21,7 @@ namespace SmartPark.Controllers
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("select * from ParkingSpots where BatteryStatus = '0'", conn);
+                SqlCommand cmd = new SqlCommand("select * from ParkingSpots where BatteryStatus = '1'", conn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
