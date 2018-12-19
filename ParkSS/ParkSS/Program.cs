@@ -69,6 +69,12 @@ namespace ParkSS
                     cmd.ExecuteNonQuery();
                     SqlDataReader reader = cmd.ExecuteReader();
                     bool hasRows = reader.HasRows;
+                    int numberOfSpotsDB = 0;
+                    if (hasRows)
+                    {
+                        reader.Read();
+                        numberOfSpotsDB = (int)reader["NumberOfSpots"];
+                    }
                     reader.Close();
                     if (!hasRows)
                     {
@@ -81,6 +87,17 @@ namespace ParkSS
                         cmd.Parameters.AddWithValue("@numberOfSpots", park.NumberOfSpots);
                         cmd.Parameters.AddWithValue("@timestamp", park.Timestamp);
                         cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        if(park.NumberOfSpots != numberOfSpotsDB)
+                        {
+                            cmd = new SqlCommand("UPDATE Parks SET NumberOfSpots=@numberofspots, Timestamp=@timestamp WHERE Id=@id", connection);
+                            cmd.Parameters.AddWithValue("@numberOfSpots", park.NumberOfSpots);
+                            cmd.Parameters.AddWithValue("@timestamp", park.Timestamp);
+                            cmd.Parameters.AddWithValue("@id", park.Id);
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                     connection.Close();
                 }
